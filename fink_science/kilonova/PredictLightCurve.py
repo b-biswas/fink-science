@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from LightCurve import LightCurve
+from fink_science.kilonova.LightCurve import LightCurve
 import numpy as np
 from scipy.optimize import minimize
 
@@ -197,7 +197,9 @@ class PredictLightCurve:
                     continue
 
                 band_index = event_df[self.lc.band_col_name] == band
-                band_df = event_df[band_index]
+                start_index = (event_df[self.lc.time_col_name] - mid_point_date) >= -50
+                end_index = (event_df[self.lc.time_col_name] - mid_point_date) <= 50
+                band_df = event_df[band_index & start_index & end_index]
                 pcs = self.pcs[band]
                 if len(band_df) > 0:
 
